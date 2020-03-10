@@ -2,11 +2,11 @@
 module.exports = (sequelize, DataTypes) => {
   const Kanban = sequelize.define('Kanban', {
     title: {
-      type: Sequelize.STRING,
+      type: DataTypes.STRING,
       validate: {notEmpty: true}
     },
     category: {
-      type: Sequelize.STRING,
+      type: DataTypes.STRING,
       validate: {notEmpty: true}
     },
     note: DataTypes.STRING,

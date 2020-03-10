@@ -4,7 +4,7 @@ class KanbanControl {
 
     static show(req, res){
         Kanban.findAll({
-            where: {userId: req.userdata.id}
+            where: {UserId: req.userdata.id}
         })
         .then(data=>res.status(200).json({"status": 200, "response": data}))
         .catch(err=>res.status(500).json({"status": 500, "response": err}))
@@ -26,9 +26,9 @@ class KanbanControl {
     static create(req, res){
         let newData = {
             title: req.body.title,
-            category: req.body.description,
+            category: req.body.category,
             note: req.body.status,
-            userId: req.userdata.id
+            UserId: req.userdata.id
         }
         Kanban.create(newData)
         .then(data=>res.status(201).json({"status": 201, "response": `new data : ${data.title} has been saved`}))//{

@@ -27,6 +27,7 @@ class UserControl {
             where: { email }
         })
         .then(user=>{
+            console.log(user)
             if(user){
                 if (bcrypt.compareSync(password, user.password)){
                     let token = jwt.sign({id: user.id, email: user.email}, process.env.JWT_SECRET)
