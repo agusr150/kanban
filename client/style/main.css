@@ -1,0 +1,61 @@
+body {
+    background-color: white;
+  }
+
+  .background {
+    background-color:#2261a1;
+    height: 1000px
+  }
+
+  .logout {
+    text-align: center;
+    padding-top: 20px;
+  }
+
+  .kanban {
+      background-color: #2261a1;
+      display: inline-flex;
+      justify-content: space-around;
+      border-radius: 5px;
+      padding: 1rem;
+      margin: 1rem;
+      width : 100%
+  }
+
+  .box-container {
+    background-color: #bdbebf;
+    color: #f0f1f5;
+    /* display: grid;
+    grid-row-gap: 20px;
+    grid-template-columns: auto auto auto auto; */
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    height: 100%;
+    width: 300px;
+    overflow: auto
+  }
+
+  header {
+    text-align: center;
+    color:black;
+    font-weight: bold;
+  }
+
+  .box-task {
+      padding: 4px;
+      display: flex;
+      flex-direction: column;
+  }
+
+  .card{
+    background-color: white;
+    color: grey;
+    border-radius: 4px;
+    margin-top: 5px;
+    padding-top: 5px;
+  }
+
+  footer {
+      text-align: center;
+  }

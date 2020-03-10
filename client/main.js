@@ -9,9 +9,9 @@ function showHello(){
     $.ajax({
         type: "GET",
         url: "https://aqueous-tor-07770.herokuapp.com/",
-        success: function(result){
-            console.log(result)
-            $(`#hello`).append(result)
+        success: function(resdivt){
+            console.log(resdivt)
+            $(`#hello`).append(resdivt)
         },
         error: function(err){
             console.log(err)
