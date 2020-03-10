@@ -1,7 +1,7 @@
 $(document).ready(function(){
-    showHello()
-    alert('test')
-    $(`#main-page`).show()
+    // showHello()
+    // alert('test')
+    // $(`#main-page`).show()
 })
 
 function showHello(){
@@ -9,9 +9,9 @@ function showHello(){
     $.ajax({
         type: "GET",
         url: "https://aqueous-tor-07770.herokuapp.com/",
-        success: function(resdivt){
-            console.log(resdivt)
-            $(`#hello`).append(resdivt)
+        success: function(result){
+            console.log(result)
+            $(`#hello`).append(result)
         },
         error: function(err){
             console.log(err)

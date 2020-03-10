@@ -1,10 +1,10 @@
 {
   "hosting": {
-    "pubdivc": "/",
+    "public": "/",
     "ignore": [
       "firebase.json",
       "**/.*",
-      "**/node_moddives/**"
+      "**/node_modules/**"
     ]
   }
 }
