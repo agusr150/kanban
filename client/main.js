@@ -16,22 +16,36 @@ var app = new Vue({
             { text: 'Learn Vue.js' },
             { text: 'Build Something Awesome' }
         ],
-        login_seen: true,
+        login_seen: false,
         register_seen: false,
         kanban_seen: false,
     },
     created() {
-        
+        let token= localStorage.getItem('token')
+        if(token){
+            console.log(token)
+            this.kanban_seen= true
+        } else { 
+            console.log(login)
+            this.login_seen = true
+        }
     },
 
     methods: {
         backLogin: function(){
-            this.register_seen = false;
+            this.error=''
+            this.register_seen = false
             this.login_seen = true
         },
         backRegister: function(){
+            this.error=''
             this.register_seen = true
             this.login_seen = false
+        },
+        logout: function(){
+            localStorage.removeItem("token")
+            this.kanban_seen = false
+            this.login_seen = true
         },
 
 
@@ -49,11 +63,14 @@ var app = new Vue({
                     password: this.password_register
                 })
                 .then(function(res){
+                    console.log("success")
+                    this.error=''
                     this.register_seen = false
+                    console.log(this.register_seen)
                     this.login_seen = true
                 })
                 .catch(function(err){
-                    console.log(err.erros)
+                    console.log(err)
                     this.error = err
                 })
             }   

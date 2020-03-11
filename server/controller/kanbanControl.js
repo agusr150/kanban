@@ -1,29 +1,30 @@
 const { Kanban } = require('../models/index')
+const createError = require('../helpers/createError')
 
 class KanbanControl {
 
-    static show(req, res){
+    static show(req, res, next){
         Kanban.findAll({
             where: {UserId: req.userdata.id}
         })
-        .then(data=>res.status(200).json({"status": 200, "response": data}))
-        .catch(err=>res.status(500).json({"status": 500, "response": err}))
+        .then(data=>res.status(200).json(data))
+        .catch(err=>next(err))
     }
 
-    static find(req, res){
+    static find(req, res, next){
         let searchId = req.params.id
         Kanban.findByPk(searchId)
         .then(data=>{
             if (data!==null){
-                res.status(200).json({"status": 200, "response": data})
+                res.status(200).json(data)
             } else {
-                res.status(404).json({"status": 404, "response": "data not found"})
+                res.status(404).json("data not found")
             }
         })
-        .catch(err=>res.status(500)({"status": 500, "response": err}))
+        .catch(err=>next(err))
     }
 
-    static create(req, res){
+    static create(req, res, next){
         let newData = {
             title: req.body.title,
             category: req.body.category,
@@ -31,47 +32,35 @@ class KanbanControl {
             UserId: req.userdata.id
         }
         Kanban.create(newData)
-        .then(data=>res.status(201).json({"status": 201, "response": `new data : ${data.title} has been saved`}))//{
-        .catch(err=>{
-            if(err.name ="SequelizeValidationError"){
-                res.status(400).json({"status": 400, "response": err.message})
-            } else {
-                res.status(500).json({"status": 500, "response": err})
-            }
-        })
+        .then(data=>res.status(201).json(`new data : ${data.title} has been saved`))
+        .catch(err=>next(err))
     }
 
-    static edit(req, res){
+    static edit(req, res, next){
         let searchId = req.params.id
         Kanban.update(req.body, {
             where: {id: searchId}
         })
         .then(data=>{
-            res.status(200).json({"status": 200, "response": `data with id : ${searchId} has been updated`})
+            res.status(200).json(`data with id : ${searchId} has been updated`)
             
         })  
-        .catch(err=>{
-            if(err.name ="SequelizeValidationError"){
-                res.status(400).json({"status": 400, "response": err.message})
-            } else {
-                res.status(500).json({"status": 500, "response": err})
-            }
-        })
+        .catch(err=>next(err))
     }
 
-    static delete(req, res){
+    static delete(req, res, next){
         let searchId =  req.params.id
         Kanban.destroy({
             where : { id: searchId}
         })
         .then(data=>{
             if(data!==0){
-                res.status(200).json({"status": 200, "response": `data with id ${searchId} has been deleted`})
+                res.status(200).json(`data with id ${searchId} has been deleted`)
             } else {
-                res.status(404).json({"status": 404, "response": "no data is deleted"})
+                res.status(404).json("no data is deleted")
             }
         })
-        .catch(err=> res.status(500).json({"status": 500, "response":err} ))
+        .catch(err=> next(err))
     }
 
 }
