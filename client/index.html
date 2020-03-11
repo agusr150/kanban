@@ -8,124 +8,141 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="style/main.css">
-    <title>Hello, world!</title>
+    <title>Kanban</title>
   </head>
   <body>
+
+    <div id="app">
+      <div class="error">{{error}}</div>
+   
       <div id="main-page" style="display:none">
           <p>Try Hello 2: </p>
         <h1 id="hello"></h1>
       </div>
 
     <!--     Register FORM   -->
-      <div id="register" class="section">
+      <div v-show="register_seen" id="register" class="section">
         <h1>Register Form</h1>
         <form id="register-form">
             <div class="form-group">
               <label for="email-reg">Email address</label>
-              <input type="email" class="form-control" id="email-reg" placeholder="register your email">
-              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+              <input v-model="email_register" type="email" class="form-control" id="email-reg" placeholder="register your email">
+              <small  id="email" class="form-text text-muted">We'll never share your email with anyone else.</small>
             </div>
             <div class="form-group">
               <label for="password-reg">Password</label>
-              <input type="password" class="form-control" id="password-reg">
+              <input v-model="password_register" type="password" class="form-control" id="password-reg">
             </div>
             <div class="form-group">
                 <label for="repassword-reg">Re-enter Your Password</label>
-                <input type="password" class="form-control" id="repassword-reg">
+                <input v-model="password_register2" type="password" class="form-control" id="repassword-reg">
               </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <button type="button" class="btn btn-primary" id="btn-login">Back To Login</button>
+            <button v-on:click="submitRegister" type="submit" class="btn btn-primary">Submit</button>
+            <button v-on:click="backLogin" type="button" class="btn btn-primary" id="btn-login">Back To Login</button>
           </form>
-    </div>
+      </div>
     <!--     Login FORM   -->
-    <div id="login" class="section">
+      <div v-show="login_seen" id="login" class="section" >
         <form id="login-form">
             <h1>Login Form</h1>
             <div class="form-group">
               <label for="email-login">Email address</label>
-              <input type="email" class="form-control" id="email-login" placeholder="input your email">
+              <input v-model="email_login" type="email" class="form-control" id="email-login" placeholder="input your email">
             </div>
             <div class="form-group">
               <label for="password-login">Password</label>
-              <input type="password" class="form-control" id="password-login">
+              <input v-model="password_login" type="password" class="form-control" id="password-login">
             </div>
-            <button type="submit" class="btn btn-primary mb-3">Login</button><br>
+            <button v-on:click="submitLogin" type="submit" class="btn btn-primary mb-3">Login</button><br>
             Please register if you have never been registered yet or using Google Sign In!
-            <button type="button" class="btn btn-primary" id="btn-register">Register</button>
+            <button v-on:click="backRegister" type="button" class="btn btn-primary" id="btn-register">Register</button>
             <div class="g-signin2" data-onsuccess="onSignIn"></div>
           </form>
+      </div>
+
+    <!--     Kanban Layout   -->
+      <div v-show="kanban_seen" class="kanban-layout" id="kanban_layout" >
+        <div class="logout">
+          <button type="button" class="btn btn-warning" id="btn_logout">Logout</button>
+        </div>
+        <div class="kanban">
+          <div class="box-container">
+            <header class="category">Backlog</header>
+            <div class="box-task">
+              <div class="card">card1</div>
+              <div class="card">card2</div>
+              <div class="card">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Itaque necessitatibus ab, sapiente provident perspiciatis repellendus officiis quo veniam dolorem enim voluptatibus vero debitis delectus hic vel eaque accusamus quam nam.</div>
+            </div>
+            <footer class="add">
+              <button v-on:click="add_backlog" type="button" class="btn btn-outline-dark" id="add_backlog" data-toggle="modal" data-target="#modal-edit">
+                +Add Card
+              </button>
+            </footer>
+          </div>
+          <div class="box-container">
+            <header class="category">Product</header>
+            <div class="box-task">
+              <div class="card">card1</div>
+              <div class="card">card2</div>
+            </div>
+            <footer class="add">
+              <button v-on:click="add_product" type="button" class="btn btn-outline-dark" id="add_product" data-toggle="modal" data-target="#modal-edit">
+                +Add Card
+              </button>
+            </footer>
+          </div>
+          <div class="box-container">
+            <header class="category">Development</header>
+            <div class="box-task">
+              <div class="card" v-for="title in developments">
+              {{title.text}}  
+              </div>
+            </div>
+            <footer class="add">
+              <button v-on:click="add_development"type="button" class="btn btn-outline-dark" id="add_development" data-toggle="modal" data-target="#modal-edit">
+                +Add Card
+              </button>
+            </footer>
+          </div>
+          <div class="box-container">
+            <header class="category">Done</header>
+            <div class="box-task">
+            </div>
+            <footer class="add">
+              <button v-on:click="add_done" type="button" class="btn btn-outline-dark" id="add_done" data-toggle="modal" data-target="#modal-edit">
+                +Add Card
+              </button>
+            </footer>
+          </div>
+        </div>
+      </div>
+
+    <!-- Modal -->
+      <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="edit-card">Edit card</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-
-  <div class="kanban-layout">
-    <div class="logout">
-      <button type="button" class="btn btn-warning">Logout</button>
-    </div>
-    <div class="tombol"></div>
-    <div class="kanban">
-      <div class="box-container">
-        <header class="category">Backlog</header>
-        <div class="box-task">
-          <div class="card">card1</div>
-          <div class="card">card2</div>
-          <div class="card">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Itaque necessitatibus ab, sapiente provident perspiciatis repellendus officiis quo veniam dolorem enim voluptatibus vero debitis delectus hic vel eaque accusamus quam nam.</div>
-        </div>
-        <footer class="add">
-          <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#modal-edit">
-            +Add Card
-          </button>
-        </footer>
-      </div>
-      <div class="box-container">
-        <header class="category">Product</header>
-        <div class="box-task">
-          <div class="card">card1</div>
-          <div class="card">card2</div>
-        </div>
-        <footer class="add"><a href="###">+Add a card</a></footer>
-      </div>
-      <div class="box-container">
-        <header class="category">Development</header>
-        <div class="box-task">
-          <div class="card">card1</div>
-          <div class="card">card2</div>
-        </div>
-        <footer class="add"><a href="###">+Add a card</a></footer>
-      </div>
-      <div class="box-container">
-        <header class="category">Done</header>
-        <div class="box-task">
-        </div>
-        <footer class="add"><a href="###">+Add a card</a></footer>
-      </div>
-    </div>
-  </div>
-
-<!-- Modal -->
-<div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="edit-card">Edit card</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
       <script src="main.js"></script>
-</body>
+  </body>
 </html>

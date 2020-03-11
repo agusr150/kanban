@@ -7,18 +7,24 @@ const client = new OAuth2Client(process.env.CLIENT_ID);
 class UserControl {
 
     static register(req, res){
+        console.log('masuk server')
+        console.log(req.body)
         User.findOne({
             where: {email:req.body.email}
         })
         .then(data=>{
             if(data){
-                res.send("your e-mail has been registered")
+                res.status(400).json("your e-mail has been registered")
             } else {
                 User.create(req.body)
-                .then(data=>res.status(201).json({"status": 201, "response":data}))
+                .then(data=>res.status(201).json(data))
+                .catch(err=>res.status(400).json(err.error))
             }
         })   
-        .catch(e=>res.status(400).json({"status": 400, "response":e}))
+        .catch(err=>{
+            console.log(err)
+            res.status(500).json(err)
+        })
     }
 
     static login(req, res){
@@ -27,23 +33,25 @@ class UserControl {
             where: { email }
         })
         .then(user=>{
-            console.log(user)
+            console.log(password)
             if(user){
+                console.log("compare password")
                 if (bcrypt.compareSync(password, user.password)){
-                    let token = jwt.sign({id: user.id, email: user.email}, process.env.JWT_SECRET)
+                    let token = jwt.sign({id: user.id, email: user.email}, 'aaa')
                     res.status(200).json({token})
                 } else {
-                    res.status(400).json({"status":400, "response": 'password wrong'})
+                    res.status(400).json('password wrong')
                 }
             } else{
-                res.status(400).json({"status":400, "response": 'email wrong'})
+                res.status(400).json('email wrong')
             }
         })
-        .catch(e => res.status(500).json({"status": 500, "response": e}))
+        .catch(err => {
+            res.status(500).json(err)
+        })
     }
 
     static googleLogin(req, res){
-        console.log('masuk')
         client.verifyIdToken({
             idToken: req.body.id_token,
             audience: process.env.CLIENT, // Specify the CLIENT_ID of the app that accesses the backend

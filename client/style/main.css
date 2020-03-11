@@ -1,11 +1,17 @@
  
 body {
     background-color: white;
+    margin: 50px;
+  }
+
+  .error{
+    color: red
   }
 
   .kanban-layout {
     background-color:#2261a1;
-    height: 1000px
+    height: 1000px;
+    width : 100%
   }
 
   .logout {
@@ -18,17 +24,13 @@ body {
       display: inline-flex;
       justify-content: space-around;
       border-radius: 5px;
-      padding: 1rem;
-      margin: 1rem;
+      padding-top: 2rem;
       width : 100%
   }
 
   .box-container {
     background-color: #bdbebf;
     color: #f0f1f5;
-    /* display: grid;
-    grid-row-gap: 20px;
-    grid-template-columns: auto auto auto auto; */
     display: flex;
     flex-direction: column;
     border-radius: 10px;
@@ -61,15 +63,3 @@ body {
   footer {
       text-align: center;
   }
-© 2020 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Help
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
