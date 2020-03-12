@@ -23,8 +23,9 @@ body {
     width : 100%
   }
 
-  .logout {
-    text-align: center;
+  .tombol {
+    display: flex;
+    justify-content: space-around;
     padding-top: 20px;
   }
 
@@ -56,10 +57,11 @@ body {
   }
 
   .box-task {
-      font-size: 12px;
+      font-size: 18px;
       padding: 8px;
       display: flex;
       flex-direction: column;
+      min-height: 100px;
   }
 
   .card{
@@ -78,8 +80,20 @@ body {
 
   .button{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
+  }
+
+  .modal{
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
   }
 
   footer {

@@ -11,6 +11,9 @@ var app = new Vue({
         email_register: '',
         password_register: '',
         password_register2: '',
+        title:'',
+        category:'',
+        note:'',
         developments: [
             { text: 'Learn JavaScript' },
             { text: 'Learn Vue.js' },
@@ -19,6 +22,8 @@ var app = new Vue({
         login_seen: false,
         register_seen: false,
         kanban_seen: false,
+        add_form: false,
+        add_task: false,
     },
     created() {
         let token= localStorage.getItem('token')
@@ -46,11 +51,6 @@ var app = new Vue({
             localStorage.removeItem("token")
             this.kanban_seen = false
             this.login_seen = true
-        },
-
-
-        add_done: function(event){
-
         },
 
         submitRegister: function(event){
@@ -83,9 +83,7 @@ var app = new Vue({
                 password: this.password_login
             })
             .then (function(res){
-                this.login_seen = false
-                this.kaban_seen = true
-                console.log(res.data.token)
+                console.log(res.data)
                 localStorage.setItem('token', res.data.token)
                 this.login_seen = false
                 this.kanban_seen = true
@@ -93,16 +91,57 @@ var app = new Vue({
             .catch (function(err){
                 this.error = err
             })
-        }
+        },
+
+        add: function(){
+            console.log('ok')
+            this.add_task = true
+            this.kanban_seen = false 
+        },
+
+        cancelTask: function(){
+            this.add_task = false
+            this.kanban_seen = true
+        },
+
+
+        submitTask: function(event){
+            event.preventDefault()
+            let token = localStorage.getItem('token')
+            console.log(token)
+            this.add_task = false
+            this.kanban_seen = true
+            axios({
+                method: "post",
+                url: `${local}/kanbans`,
+                headers: {
+                    token: token
+                },
+                data: {
+                    title: this.title,
+                    category: this.category,
+                    note: this.note
+                }
+            })
+            .then(function(res){
+                console.log("success")
+            })
+            .catch(function(err){
+                console.log("fail")
+                console.log(err.response.data)
+                this.error = err.response.data
+            })
+            
+        },
+
+
+        //addtask
 
 
 
     },
 
-    // created(){
-    //     axios.post(`${local}/register`)
-
-    // } 
+  
 
 
 
