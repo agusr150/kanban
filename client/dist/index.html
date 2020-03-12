@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/main.d4190f58.css">
+    <link rel="stylesheet" href="/4a0e2217729b83ac757cd1a6d4190f58.css">
     <title>Kanban</title>
   <script src="/main.d4190f58.js"></script></head>
   <body>
@@ -70,37 +70,28 @@
         <div class="kanban">
           <div class="box-container" style="background-color: green;">
             <header class="category">Backlog</header>
-            <div class="box-task">
-              <div class="card">
-                <div class="content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem incidunt maxime accusantium, culpa numquam blanditiis ex impedit at excepturi maiores, officiis placeat reprehenderit laboriosam distinctio. Dolore mollitia accusantium exercitationem asperiores.
-                  <div class="button">
-                    <button class="btn">Edit <i class="fa fa-pencil"></i></button>
-                    <button class="btn">Remove <i class="fa fa-trash"></i></button>
-                  </div>
-                </div>
-              </div>
-              <div class="card">card2</div>
-              <div class="card">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Itaque necessitatibus ab, sapiente provident perspiciatis repellendus officiis quo veniam dolorem enim voluptatibus vero debitis delectus hic vel eaque accusamus quam nam.</div>
+            <div id="backlog" class="box-task">  
+              <card></card>
             </div>
-           </div>
+          </div>
           <div class="box-container" style="background-color: yellow;">
             <header class="category">Product</header>
-            <div class="box-task">
-              <div class="card">card1</div>
-              <div class="card">card2</div>
+            <div id="product" class="box-task">
+              <card></card>
             </div>
-            </div>
+          </div>
           <div class="box-container" style="background-color: red;">
             <header class="category">Development</header>
-            <div class="box-task">
-             
+            <div id="development" class="box-task">
+              <card></card>
             </div>
             </div>
           <div class="box-container">
             <header class="category">Done</header>
-            <div class="box-task">
+            <div id="done" class="box-task">
+              <card></card>
             </div>
-            </div>
+          </div>
         </div>
       </div>
 
@@ -128,6 +119,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-      <script src="/main.1f19ae8e.js"></script>
+      <script src="/7a9076d6d94e62c13d641aa71f19ae8e.js"></script>
+      <script src="/6a7116670b94c52a22978f061b158c65.js"></script>
   </div></body>
 </html>
