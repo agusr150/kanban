@@ -1,0 +1,89 @@
+ 
+body {
+    background-image:url("/kanban.af6fd826.jpg");
+    margin: 50px;
+    color: white
+  }
+
+  .error{
+    color: red
+  }
+
+  .register{
+    width: 60%
+  }
+
+  .login{
+    width: 60%;
+  }
+
+  .kanban-layout {
+    /* background-color:#2261a1; */
+    height: 1000px;
+    width : 100%
+  }
+
+  .logout {
+    text-align: center;
+    padding-top: 20px;
+  }
+
+  .kanban {
+      /* background-color: #2261a1; */
+      display: inline-flex;
+      justify-content: space-around;
+      border-radius: 5px;
+      padding-top: 2rem;
+      width : 100%
+  }
+
+  .box-container {
+    background-color: #bdbebf;
+    color: #f0f1f5;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    height: 100%;
+    width: 250px;
+    overflow: auto;
+    font-size: 24px;
+  }
+
+  header {
+    text-align: center;
+    color:black;
+    font-weight: bold;
+  }
+
+  .box-task {
+      font-size: 12px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+  }
+
+  .card{
+    background-color: white;
+    color: grey;
+    border-radius: 4px;
+    margin-top: 5px;
+    padding-top: 5px;
+    display: flex;
+    flex-direction: row
+  }
+
+  .content{
+    width: 250px
+  }
+
+  .button{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  footer {
+      text-align: center;
+  }
+
+/*# sourceMappingURL=/main.d4190f58.css.map */
