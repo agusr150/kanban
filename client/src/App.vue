@@ -51,7 +51,6 @@ import backlogform from './components/Backlog.vue'
 import productform from './component/Product.vue'
 import developmentform from './component/Development.vue'
 import doneform from './component/Done.vue'
-//import kanban from './components/Kanban.vue'
 
 export default {
     name: 'app',
