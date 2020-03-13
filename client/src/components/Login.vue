@@ -1,7 +1,7 @@
 
 <template>
 <div>
-    <div v-if="mauLogin" id="login" class="login" >
+    <div v-if="login_seen" id="login" class="login" >
         <form id="login-form">
             <h1>Login Form</h1>
             <div class="form-group">
@@ -19,7 +19,7 @@
           </form>
     </div>
 
-    <div v-else id="register" class="register">
+    <div v-if="register_seen" id="register" class="register">
         <h1>Register Form</h1>
         <form id="register-form">
             <div class="form-group">
@@ -46,13 +46,69 @@
 import axios from 'axios'
 export default {
     data:{
-        mauLogin:true
+        email_login: '',
+        password_login: '',
+        email_register: '',
+        password_register: '',
+        password_register2: '',
+        login_seen: false,
+        register_seen: false,
     },
+    watch:{
+        isRegister: function(){
+            if(this.register_seen=== false){
+                this.login_seen = true
+            }
+        }
+    },
+
+
     methods: {
         backLogin: function(){
             this.error=''
             this.mauLogin = false
-        }
+        },
+        backRegister: function(){
+            this.error=''
+            this.register_seen = true
+            this.login_seen = false
+        },
+        submitRegister: function(event){
+            event.preventDefault()
+            if (this.password_register !== this.password_register2){
+                this.error="password must be same"
+            } else {
+                axios.post(`${local}/user/register`, {
+                    email: this.email_register,
+                    password: this.password_register
+                })
+                .then(function(res){
+                    console.log("success")
+                    this.error=''
+                    this.register_seen = false
+                })
+                .catch(function(err){
+                    console.log(err)
+                    this.error = err
+                })
+            }   
+        },
+        submitLogin: function(event){
+            event.preventDefault()
+            axios.post(`${local}/user/login`, {
+                email: this.email_login,
+                password: this.password_login
+            })
+            .then (function(res){
+                console.log(res.data)
+                localStorage.setItem('token', res.data.token)
+                this.login_seen = false
+                this.$emit('app', res.data.token)
+            })
+            .catch (function(err){
+                this.error = err
+            })
+        },
     }
 }
 
