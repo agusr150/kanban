@@ -1,125 +1,22 @@
-<!doctype html>
+
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="style/main.css">
-    <title>Kanban</title>
-  </head>
-  <body>
-
-    <div id="app">
-      <div class="error">{{error}}</div>
-   
-      <div id="main-page" style="display:none">
-          <p>Try Hello 2: </p>
-        <h1 id="hello"></h1>
+    <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="style/main.css">
+      <title>Kanban</title>
+    </head>
+    <body>
+  
+      <div id="app">
+        
       </div>
-
-    <!--     Register FORM   -->
-      <div v-if="register_seen" id="register" class="register">
-        <h1>Register Form</h1>
-        <form id="register-form">
-            <div class="form-group">
-              <label for="email-reg">Email address</label>
-              <input v-model="email_register" type="email" class="form-control" id="email-reg" placeholder="register your email">
-              <small  id="email" class="form-text text-muted">We'll never share your email with anyone else.</small>
-            </div>
-            <div class="form-group">
-              <label for="password-reg">Password</label>
-              <input v-model="password_register" type="password" class="form-control" id="password-reg" placeholder="register your new password">
-            </div>
-            <div class="form-group">
-                <label for="repassword-reg">Re-enter Your Password</label>
-                <input v-model="password_register2" type="password" class="form-control" id="repassword-reg" placeholder="re-type your password">
-              </div>
-            <button v-on:click="submitRegister" type="submit" class="btn btn-primary">Submit</button>
-            <button v-on:click="backLogin" type="button" class="btn btn-primary" id="btn-login">Back To Login</button>
-          </form>
-      </div>
-    <!--     Login FORM   -->
-      <div v-if="login_seen" id="login" class="login" >
-        <form id="login-form">
-            <h1>Login Form</h1>
-            <div class="form-group">
-              <label for="email-login">Email address</label>
-              <input v-model="email_login" type="email" class="form-control" id="email-login" placeholder="input your email">
-            </div>
-            <div class="form-group">
-              <label for="password-login">Password</label>
-              <input v-model="password_login" type="password" class="form-control" id="password-login" placeholder="input your password">
-            </div>
-            <button v-on:click="submitLogin" type="submit" class="btn btn-primary mb-3">Login</button><br>
-            Please register if you have never been registered yet or using Google Sign In!
-            <button v-on:click="backRegister" type="button" class="btn btn-primary" id="btn-register">Register</button>
-            <div class="g-signin2" data-onsuccess="onSignIn"></div>
-          </form>
-      </div>
-
-    <!--     Kanban Layout   -->
-      <div v-if="kanban_seen" class="kanban-layout" id="kanban_layout" >
-        <div class="tombol">
-          <button v-on:click="add" type="button" class="btn btn-primary" id="btn_add">Add Task</button>
-          <button v-on:click="logout" type="button" class="btn btn-warning" id="btn_logout">Logout</button>
-        </div>
-        <div class="kanban">
-          <div class="box-container" style="background-color: green;">
-            <header class="category">Backlog</header>
-            <div id="backlog" class="box-task">  
-              <card></card>
-            </div>
-          </div>
-          <div class="box-container" style="background-color: yellow;">
-            <header class="category">Product</header>
-            <div id="product" class="box-task">
-              <card></card>
-            </div>
-          </div>
-          <div class="box-container" style="background-color: red;">
-            <header class="category">Development</header>
-            <div id="development" class="box-task">
-              <card></card>
-            </div>
-            </div>
-          <div class="box-container">
-            <header class="category">Done</header>
-            <div id="done" class="box-task">
-              <card></card>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    <!-- Add -->
-    <div v-if="add_task" id="modal">
-      <form>
-        <h2>Add Task</h2>
-        <label >Title :</label>
-        <input v-model="title" type="text" class="form-control" placeholder="input title">
-        <label >Category :</label>
-        <select v-model="category" class="custom-select">
-          <option selected>Select category</option>
-          <option>Backlog</option>
-          <option>Product</option>
-          <option>Development</option>
-          <option>Done</option>
-        </select>
-        <label >Note:</label>
-        <input v-model="note" type="text" class="form-control" placeholder="input notes if required">
-        <button v-on:click="submitTask" type="submit" class="btn btn-primary">Add</button>
-        <button v-on:click="cancelTask" type="button" class="btn btn-primary">Cancel</button>
-      </form>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-      <script src="main.js"></script>
-      <script src="src/card.js"></script>
-  </body>
-</html>
+  
+        <script src="/src/main.js"></script>
+    </body>
+  </html>
