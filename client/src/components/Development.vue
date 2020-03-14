@@ -1,14 +1,14 @@
 <template>
         <div>
-            <div class="box-container" style="background-color: green" >
-                <header class="category">Backlog</header>
+            <div class="box-container" style="background-color: yellow" >
+                <header class="category">Development</header>
                 <div id="backlog" class="box-task">  
-                    <div v-for="list in backlog" :key="list.id" class="card" style="background: lightgreen">
+                    <div v-for="list in development" :key="list.id" class="card" style="background: #f0e9a3">
                         <div class="content">{{list.title}}</div>
                         <div class="subcontent">note: {{list.note}}</div>
                         <div class="button">
-                            <button v-on:click="editTask(list.id, list.title, list.category, list.note)"  class="btn btn-success" >Edit <i class="fa fa-pencil"></i></button>
-                            <button v-on:click="deleteTask(list.id)" class="btn btn-success">Remove <i class="fa fa-trash"></i></button>
+                            <button v-on:click="editTask(list.id, list.title, list.category, list.note)"  class="btn btn-warning" >Edit <i class="fa fa-pencil"></i></button>
+                            <button v-on:click="deleteTask(list.id)" class="btn btn-warning">Remove <i class="fa fa-trash"></i></button>
                         </div>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
 import axios from 'axios'
 let local='http://localhost:3000'
 export default {
-    props: ["backlog"],
+    props: ["development"],
     data(){
         return{
             error: '',

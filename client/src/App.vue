@@ -13,6 +13,9 @@
                
                <div class="kanban">
                 <backlogform :backlog="backlog" @fromChild="refreshKanban"></backlogform>
+                <developmentform :development="development" @fromChild="refreshKanban"></developmentform>
+                <productform :product="product" @fromChild="refreshKanban"></productform>
+                <doneform :done="done" @fromChild="refreshKanban"></doneform>
                  
 
                </div>
@@ -32,8 +35,8 @@
                 <select v-model="form.category" class="custom-select">
                     <option selected>Select category</option>
                     <option>Backlog</option>
-                    <option>Product</option>
                     <option>Development</option>
+                    <option>Product</option>
                     <option>Done</option>
                 </select>
             </div>
@@ -58,14 +61,17 @@ let local='http://localhost:3000'
 import axios from 'axios'
 import login from './components/LoginRegister.vue'
 import backlogform from './components/Backlog.vue'
-// import productform from './component/Product.vue'
-// import developmentform from './component/Development.vue'
-// import doneform from './component/Done.vue'
+import developmentform from './components/Development.vue'
+import productform from './components/Product.vue'
+import doneform from './components/Done.vue'
 export default {
     name: 'app',
     components: {
         login, 
-        backlogform
+        backlogform,
+        developmentform,
+        productform,
+        doneform
         },
     data(){
         return {

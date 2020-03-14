@@ -1,14 +1,14 @@
 <template>
         <div>
-            <div class="box-container" style="background-color: yellow" >
+            <div class="box-container" style="background-color: red" >
                 <header class="category">Product</header>
                 <div id="product" class="box-task">  
-                    <div v-for="list in product" :key="list.id" class="card" style="background: lightyellow">
+                    <div v-for="list in product" :key="list.id" class="card" style="background: #db957f">
                         <div class="content">{{list.title}}</div>
                         <div class="subcontent">note: {{list.note}}</div>
                         <div class="button">
-                            <button v-on:click="editTask(list.id, list.title, list.category, list.note)"  class="btn btn-success" >Edit <i class="fa fa-pencil"></i></button>
-                            <button v-on:click="deleteTask(list.id)" class="btn btn-success">Remove <i class="fa fa-trash"></i></button>
+                            <button v-on:click="editTask(list.id, list.title, list.category, list.note)"  class="btn btn-danger" >Edit <i class="fa fa-pencil"></i></button>
+                            <button v-on:click="deleteTask(list.id)" class="btn btn-danger">Remove <i class="fa fa-trash"></i></button>
                         </div>
                     </div>
                 </div>
@@ -28,8 +28,8 @@
                 <select v-model="form.category" class="custom-select">
                     <option selected>Select category</option>
                     <option>Backlog</option>
-                    <option>Product</option>
                     <option>Development</option>
+                    <option>Product</option>
                     <option>Done</option>
                 </select>
             </div>

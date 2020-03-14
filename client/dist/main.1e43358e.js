@@ -11376,9 +11376,9 @@ exports.default = _default;
                   _vm._v(" "),
                   _c("option", [_vm._v("Backlog")]),
                   _vm._v(" "),
-                  _c("option", [_vm._v("Product")]),
-                  _vm._v(" "),
                   _c("option", [_vm._v("Development")]),
+                  _vm._v(" "),
+                  _c("option", [_vm._v("Product")]),
                   _vm._v(" "),
                   _c("option", [_vm._v("Done")])
                 ]
@@ -11520,7 +11520,7 @@ render._withStripped = true
         
       }
     })();
-},{"axios":"node_modules/axios/index.js","_css_loader":"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/App.vue":[function(require,module,exports) {
+},{"axios":"node_modules/axios/index.js","_css_loader":"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/Development.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11529,10 +11529,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
-
-var _LoginRegister = _interopRequireDefault(require("./components/LoginRegister.vue"));
-
-var _Backlog = _interopRequireDefault(require("./components/Backlog.vue"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11591,15 +11587,1426 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
 var local = 'http://localhost:3000';
-// import productform from './component/Product.vue'
-// import developmentform from './component/Development.vue'
-// import doneform from './component/Done.vue'
+var _default = {
+  props: ["development"],
+  data: function data() {
+    return {
+      error: '',
+      form: {
+        id: '',
+        title: '',
+        category: null,
+        note: ''
+      }
+    };
+  },
+  methods: {
+    deleteTask: function deleteTask(id) {
+      this.$refs['del-modal'].show();
+      this.form.id = id;
+    },
+    submitDelete: function submitDelete(event) {
+      var _this = this;
+
+      event.preventDefault();
+      console.log(this.form.id);
+      var token = localStorage.getItem('token');
+      (0, _axios.default)({
+        method: "delete",
+        url: "".concat(local, "/kanbans/") + this.form.id,
+        headers: {
+          token: token
+        }
+      }).then(function (data) {
+        console.log('succes delete');
+
+        _this.hideModal();
+
+        _this.$emit('fromChild');
+      }).catch(function (err) {
+        console.log('fail');
+        _this.error = err.response.data;
+      });
+    },
+    editTask: function editTask(id, title, category, note) {
+      this.$refs['my-modal'].show();
+      this.form.id = id;
+      this.form.title = title;
+      this.form.category = category;
+      this.form.note = note;
+    },
+    hideModal: function hideModal() {
+      this.error = '';
+      this.$refs['my-modal'].hide();
+      this.$refs['del-modal'].hide();
+    },
+    submitEdit: function submitEdit(event) {
+      var _this2 = this;
+
+      event.preventDefault();
+      var token = localStorage.getItem('token');
+      (0, _axios.default)({
+        method: "put",
+        url: "".concat(local, "/kanbans/") + this.form.id,
+        headers: {
+          token: token
+        },
+        data: this.form
+      }).then(function (data) {
+        _this2.hideModal();
+
+        _this2.$emit('fromChild');
+      }).catch(function (err) {
+        console.log('fail');
+        _this2.error = err.response.data;
+      });
+    }
+  }
+};
+exports.default = _default;
+        var $60b8fa = exports.default || module.exports;
+      
+      if (typeof $60b8fa === 'function') {
+        $60b8fa = $60b8fa.options;
+      }
+    
+        /* template */
+        Object.assign($60b8fa, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "div",
+        {
+          staticClass: "box-container",
+          staticStyle: { "background-color": "yellow" }
+        },
+        [
+          _c("header", { staticClass: "category" }, [_vm._v("Development")]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "box-task", attrs: { id: "backlog" } },
+            _vm._l(_vm.development, function(list) {
+              return _c(
+                "div",
+                {
+                  key: list.id,
+                  staticClass: "card",
+                  staticStyle: { background: "#f0e9a3" }
+                },
+                [
+                  _c("div", { staticClass: "content" }, [
+                    _vm._v(_vm._s(list.title))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "subcontent" }, [
+                    _vm._v("note: " + _vm._s(list.note))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "button" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-warning",
+                        on: {
+                          click: function($event) {
+                            return _vm.editTask(
+                              list.id,
+                              list.title,
+                              list.category,
+                              list.note
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _vm._v("Edit "),
+                        _c("i", { staticClass: "fa fa-pencil" })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-warning",
+                        on: {
+                          click: function($event) {
+                            return _vm.deleteTask(list.id)
+                          }
+                        }
+                      },
+                      [
+                        _vm._v("Remove "),
+                        _c("i", { staticClass: "fa fa-trash" })
+                      ]
+                    )
+                  ])
+                ]
+              )
+            }),
+            0
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          ref: "my-modal",
+          attrs: {
+            "hide-footer": "",
+            "hide-header": "",
+            "no-close-on-backdrop": ""
+          }
+        },
+        [
+          _c("div", { staticClass: "error" }, [_vm._v(_vm._s(_vm.error))]),
+          _vm._v(" "),
+          _c("h2", [_vm._v("Edit Task")]),
+          _vm._v(" "),
+          _c("form", [
+            _c("div", { staticClass: "el-form" }, [
+              _vm._v("\n                Title :\n                "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.title,
+                    expression: "form.title"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text" },
+                domProps: { value: _vm.form.title },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "title", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "el-form" }, [
+              _vm._v("\n                Category :\n                "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.category,
+                      expression: "form.category"
+                    }
+                  ],
+                  staticClass: "custom-select",
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.form,
+                        "category",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    }
+                  }
+                },
+                [
+                  _c("option", { attrs: { selected: "" } }, [
+                    _vm._v("Select category")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", [_vm._v("Backlog")]),
+                  _vm._v(" "),
+                  _c("option", [_vm._v("Development")]),
+                  _vm._v(" "),
+                  _c("option", [_vm._v("Product")]),
+                  _vm._v(" "),
+                  _c("option", [_vm._v("Done")])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "el-form" }, [
+              _vm._v("\n                Note:\n                "),
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.note,
+                    expression: "form.note"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  rows: "3",
+                  placeholder: "input notes if required"
+                },
+                domProps: { value: _vm.form.note },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "note", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("div", [
+                _c(
+                  "div",
+                  [
+                    _c(
+                      "b-button",
+                      {
+                        staticClass: "mt-3",
+                        attrs: { variant: "outline-primary", block: "" },
+                        on: { click: _vm.submitEdit }
+                      },
+                      [_vm._v("Submit Update")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-button",
+                      {
+                        staticClass: "mt-2",
+                        attrs: { variant: "outline-warning", block: "" },
+                        on: { click: _vm.hideModal }
+                      },
+                      [_vm._v("Cancel")]
+                    )
+                  ],
+                  1
+                )
+              ])
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          ref: "del-modal",
+          attrs: {
+            "hide-footer": "",
+            "hide-header": "",
+            "no-close-on-backdrop": ""
+          }
+        },
+        [
+          _c("div", { staticClass: "error" }, [_vm._v(_vm._s(_vm.error))]),
+          _vm._v(" "),
+          _c("div", [_vm._v("Are you sure to delete this task? ")]),
+          _vm._v(" "),
+          _c(
+            "div",
+            [
+              _c(
+                "b-button",
+                {
+                  staticClass: "mt-3",
+                  attrs: { variant: "outline-danger", block: "" },
+                  on: { click: _vm.submitDelete }
+                },
+                [_vm._v("Confirm Delete")]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                {
+                  staticClass: "mt-2",
+                  attrs: { variant: "outline-warning", block: "" },
+                  on: { click: _vm.hideModal }
+                },
+                [_vm._v("Cancel")]
+              )
+            ],
+            1
+          )
+        ]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$60b8fa', $60b8fa);
+          } else {
+            api.reload('$60b8fa', $60b8fa);
+          }
+        }
+
+        
+      }
+    })();
+},{"axios":"node_modules/axios/index.js","_css_loader":"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/Product.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _axios = _interopRequireDefault(require("axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var local = 'http://localhost:3000';
+var _default = {
+  props: ["product"],
+  data: function data() {
+    return {
+      error: '',
+      form: {
+        id: '',
+        title: '',
+        category: null,
+        note: ''
+      }
+    };
+  },
+  methods: {
+    deleteTask: function deleteTask(id) {
+      this.$refs['del-modal'].show();
+      this.form.id = id;
+    },
+    submitDelete: function submitDelete(event) {
+      var _this = this;
+
+      event.preventDefault();
+      console.log(this.form.id);
+      var token = localStorage.getItem('token');
+      (0, _axios.default)({
+        method: "delete",
+        url: "".concat(local, "/kanbans/") + this.form.id,
+        headers: {
+          token: token
+        }
+      }).then(function (data) {
+        console.log('succes delete');
+
+        _this.hideModal();
+
+        _this.$emit('fromChild');
+      }).catch(function (err) {
+        console.log('fail');
+        _this.error = err.response.data;
+      });
+    },
+    editTask: function editTask(id, title, category, note) {
+      this.$refs['my-modal'].show();
+      this.form.id = id;
+      this.form.title = title;
+      this.form.category = category;
+      this.form.note = note;
+    },
+    hideModal: function hideModal() {
+      this.error = '';
+      this.$refs['my-modal'].hide();
+      this.$refs['del-modal'].hide();
+    },
+    submitEdit: function submitEdit(event) {
+      var _this2 = this;
+
+      event.preventDefault();
+      var token = localStorage.getItem('token');
+      (0, _axios.default)({
+        method: "put",
+        url: "".concat(local, "/kanbans/") + this.form.id,
+        headers: {
+          token: token
+        },
+        data: this.form
+      }).then(function (data) {
+        _this2.hideModal();
+
+        _this2.$emit('fromChild');
+      }).catch(function (err) {
+        console.log('fail');
+        _this2.error = err.response.data;
+      });
+    }
+  }
+};
+exports.default = _default;
+        var $13622b = exports.default || module.exports;
+      
+      if (typeof $13622b === 'function') {
+        $13622b = $13622b.options;
+      }
+    
+        /* template */
+        Object.assign($13622b, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "div",
+        {
+          staticClass: "box-container",
+          staticStyle: { "background-color": "red" }
+        },
+        [
+          _c("header", { staticClass: "category" }, [_vm._v("Product")]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "box-task", attrs: { id: "product" } },
+            _vm._l(_vm.product, function(list) {
+              return _c(
+                "div",
+                {
+                  key: list.id,
+                  staticClass: "card",
+                  staticStyle: { background: "#db957f" }
+                },
+                [
+                  _c("div", { staticClass: "content" }, [
+                    _vm._v(_vm._s(list.title))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "subcontent" }, [
+                    _vm._v("note: " + _vm._s(list.note))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "button" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        on: {
+                          click: function($event) {
+                            return _vm.editTask(
+                              list.id,
+                              list.title,
+                              list.category,
+                              list.note
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _vm._v("Edit "),
+                        _c("i", { staticClass: "fa fa-pencil" })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        on: {
+                          click: function($event) {
+                            return _vm.deleteTask(list.id)
+                          }
+                        }
+                      },
+                      [
+                        _vm._v("Remove "),
+                        _c("i", { staticClass: "fa fa-trash" })
+                      ]
+                    )
+                  ])
+                ]
+              )
+            }),
+            0
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          ref: "my-modal",
+          attrs: {
+            "hide-footer": "",
+            "hide-header": "",
+            "no-close-on-backdrop": ""
+          }
+        },
+        [
+          _c("div", { staticClass: "error" }, [_vm._v(_vm._s(_vm.error))]),
+          _vm._v(" "),
+          _c("h2", [_vm._v("Edit Task")]),
+          _vm._v(" "),
+          _c("form", [
+            _c("div", { staticClass: "el-form" }, [
+              _vm._v("\n                Title :\n                "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.title,
+                    expression: "form.title"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text" },
+                domProps: { value: _vm.form.title },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "title", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "el-form" }, [
+              _vm._v("\n                Category :\n                "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.category,
+                      expression: "form.category"
+                    }
+                  ],
+                  staticClass: "custom-select",
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.form,
+                        "category",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    }
+                  }
+                },
+                [
+                  _c("option", { attrs: { selected: "" } }, [
+                    _vm._v("Select category")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", [_vm._v("Backlog")]),
+                  _vm._v(" "),
+                  _c("option", [_vm._v("Development")]),
+                  _vm._v(" "),
+                  _c("option", [_vm._v("Product")]),
+                  _vm._v(" "),
+                  _c("option", [_vm._v("Done")])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "el-form" }, [
+              _vm._v("\n                Note:\n                "),
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.note,
+                    expression: "form.note"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  rows: "3",
+                  placeholder: "input notes if required"
+                },
+                domProps: { value: _vm.form.note },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "note", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("div", [
+                _c(
+                  "div",
+                  [
+                    _c(
+                      "b-button",
+                      {
+                        staticClass: "mt-3",
+                        attrs: { variant: "outline-primary", block: "" },
+                        on: { click: _vm.submitEdit }
+                      },
+                      [_vm._v("Submit Update")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-button",
+                      {
+                        staticClass: "mt-2",
+                        attrs: { variant: "outline-warning", block: "" },
+                        on: { click: _vm.hideModal }
+                      },
+                      [_vm._v("Cancel")]
+                    )
+                  ],
+                  1
+                )
+              ])
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          ref: "del-modal",
+          attrs: {
+            "hide-footer": "",
+            "hide-header": "",
+            "no-close-on-backdrop": ""
+          }
+        },
+        [
+          _c("div", { staticClass: "error" }, [_vm._v(_vm._s(_vm.error))]),
+          _vm._v(" "),
+          _c("div", [_vm._v("Are you sure to delete this task? ")]),
+          _vm._v(" "),
+          _c(
+            "div",
+            [
+              _c(
+                "b-button",
+                {
+                  staticClass: "mt-3",
+                  attrs: { variant: "outline-danger", block: "" },
+                  on: { click: _vm.submitDelete }
+                },
+                [_vm._v("Confirm Delete")]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                {
+                  staticClass: "mt-2",
+                  attrs: { variant: "outline-warning", block: "" },
+                  on: { click: _vm.hideModal }
+                },
+                [_vm._v("Cancel")]
+              )
+            ],
+            1
+          )
+        ]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$13622b', $13622b);
+          } else {
+            api.reload('$13622b', $13622b);
+          }
+        }
+
+        
+      }
+    })();
+},{"axios":"node_modules/axios/index.js","_css_loader":"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/Done.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _axios = _interopRequireDefault(require("axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var local = 'http://localhost:3000';
+var _default = {
+  props: ["done"],
+  data: function data() {
+    return {
+      error: '',
+      form: {
+        id: '',
+        title: '',
+        category: null,
+        note: ''
+      }
+    };
+  },
+  methods: {
+    deleteTask: function deleteTask(id) {
+      this.$refs['del-modal'].show();
+      this.form.id = id;
+    },
+    submitDelete: function submitDelete(event) {
+      var _this = this;
+
+      event.preventDefault();
+      console.log(this.form.id);
+      var token = localStorage.getItem('token');
+      (0, _axios.default)({
+        method: "delete",
+        url: "".concat(local, "/kanbans/") + this.form.id,
+        headers: {
+          token: token
+        }
+      }).then(function (data) {
+        console.log('succes delete');
+
+        _this.hideModal();
+
+        _this.$emit('fromChild');
+      }).catch(function (err) {
+        console.log('fail');
+        _this.error = err.response.data;
+      });
+    },
+    editTask: function editTask(id, title, category, note) {
+      this.$refs['my-modal'].show();
+      this.form.id = id;
+      this.form.title = title;
+      this.form.category = category;
+      this.form.note = note;
+    },
+    hideModal: function hideModal() {
+      this.error = '';
+      this.$refs['my-modal'].hide();
+      this.$refs['del-modal'].hide();
+    },
+    submitEdit: function submitEdit(event) {
+      var _this2 = this;
+
+      event.preventDefault();
+      var token = localStorage.getItem('token');
+      (0, _axios.default)({
+        method: "put",
+        url: "".concat(local, "/kanbans/") + this.form.id,
+        headers: {
+          token: token
+        },
+        data: this.form
+      }).then(function (data) {
+        _this2.hideModal();
+
+        _this2.$emit('fromChild');
+      }).catch(function (err) {
+        console.log('fail');
+        _this2.error = err.response.data;
+      });
+    }
+  }
+};
+exports.default = _default;
+        var $acdb61 = exports.default || module.exports;
+      
+      if (typeof $acdb61 === 'function') {
+        $acdb61 = $acdb61.options;
+      }
+    
+        /* template */
+        Object.assign($acdb61, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "div",
+        {
+          staticClass: "box-container",
+          staticStyle: { "background-color": "blue" }
+        },
+        [
+          _c("header", { staticClass: "category" }, [_vm._v("Done")]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "box-task", attrs: { id: "done" } },
+            _vm._l(_vm.done, function(list) {
+              return _c(
+                "div",
+                {
+                  key: list.id,
+                  staticClass: "card",
+                  staticStyle: { background: "lightblue" }
+                },
+                [
+                  _c("div", { staticClass: "content" }, [
+                    _vm._v(_vm._s(list.title))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "subcontent" }, [
+                    _vm._v("note: " + _vm._s(list.note))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "button" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        on: {
+                          click: function($event) {
+                            return _vm.editTask(
+                              list.id,
+                              list.title,
+                              list.category,
+                              list.note
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _vm._v("Edit "),
+                        _c("i", { staticClass: "fa fa-pencil" })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        on: {
+                          click: function($event) {
+                            return _vm.deleteTask(list.id)
+                          }
+                        }
+                      },
+                      [
+                        _vm._v("Remove "),
+                        _c("i", { staticClass: "fa fa-trash" })
+                      ]
+                    )
+                  ])
+                ]
+              )
+            }),
+            0
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          ref: "my-modal",
+          attrs: {
+            "hide-footer": "",
+            "hide-header": "",
+            "no-close-on-backdrop": ""
+          }
+        },
+        [
+          _c("div", { staticClass: "error" }, [_vm._v(_vm._s(_vm.error))]),
+          _vm._v(" "),
+          _c("h2", [_vm._v("Edit Task")]),
+          _vm._v(" "),
+          _c("form", [
+            _c("div", { staticClass: "el-form" }, [
+              _vm._v("\n                Title :\n                "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.title,
+                    expression: "form.title"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text" },
+                domProps: { value: _vm.form.title },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "title", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "el-form" }, [
+              _vm._v("\n                Category :\n                "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.category,
+                      expression: "form.category"
+                    }
+                  ],
+                  staticClass: "custom-select",
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.form,
+                        "category",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    }
+                  }
+                },
+                [
+                  _c("option", { attrs: { selected: "" } }, [
+                    _vm._v("Select category")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", [_vm._v("Backlog")]),
+                  _vm._v(" "),
+                  _c("option", [_vm._v("Development")]),
+                  _vm._v(" "),
+                  _c("option", [_vm._v("Product")]),
+                  _vm._v(" "),
+                  _c("option", [_vm._v("Done")])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "el-form" }, [
+              _vm._v("\n                Note:\n                "),
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.note,
+                    expression: "form.note"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  rows: "3",
+                  placeholder: "input notes if required"
+                },
+                domProps: { value: _vm.form.note },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "note", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("div", [
+                _c(
+                  "div",
+                  [
+                    _c(
+                      "b-button",
+                      {
+                        staticClass: "mt-3",
+                        attrs: { variant: "outline-primary", block: "" },
+                        on: { click: _vm.submitEdit }
+                      },
+                      [_vm._v("Submit Update")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-button",
+                      {
+                        staticClass: "mt-2",
+                        attrs: { variant: "outline-warning", block: "" },
+                        on: { click: _vm.hideModal }
+                      },
+                      [_vm._v("Cancel")]
+                    )
+                  ],
+                  1
+                )
+              ])
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          ref: "del-modal",
+          attrs: {
+            "hide-footer": "",
+            "hide-header": "",
+            "no-close-on-backdrop": ""
+          }
+        },
+        [
+          _c("div", { staticClass: "error" }, [_vm._v(_vm._s(_vm.error))]),
+          _vm._v(" "),
+          _c("div", [_vm._v("Are you sure to delete this task? ")]),
+          _vm._v(" "),
+          _c(
+            "div",
+            [
+              _c(
+                "b-button",
+                {
+                  staticClass: "mt-3",
+                  attrs: { variant: "outline-danger", block: "" },
+                  on: { click: _vm.submitDelete }
+                },
+                [_vm._v("Confirm Delete")]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                {
+                  staticClass: "mt-2",
+                  attrs: { variant: "outline-warning", block: "" },
+                  on: { click: _vm.hideModal }
+                },
+                [_vm._v("Cancel")]
+              )
+            ],
+            1
+          )
+        ]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$acdb61', $acdb61);
+          } else {
+            api.reload('$acdb61', $acdb61);
+          }
+        }
+
+        
+      }
+    })();
+},{"axios":"node_modules/axios/index.js","_css_loader":"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/App.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _axios = _interopRequireDefault(require("axios"));
+
+var _LoginRegister = _interopRequireDefault(require("./components/LoginRegister.vue"));
+
+var _Backlog = _interopRequireDefault(require("./components/Backlog.vue"));
+
+var _Development = _interopRequireDefault(require("./components/Development.vue"));
+
+var _Product = _interopRequireDefault(require("./components/Product.vue"));
+
+var _Done = _interopRequireDefault(require("./components/Done.vue"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var local = 'http://localhost:3000';
 var _default = {
   name: 'app',
   components: {
     login: _LoginRegister.default,
-    backlogform: _Backlog.default
+    backlogform: _Backlog.default,
+    developmentform: _Development.default,
+    productform: _Product.default,
+    doneform: _Done.default
   },
   data: function data() {
     return {
@@ -11760,6 +13167,21 @@ exports.default = _default;
                 _c("backlogform", {
                   attrs: { backlog: _vm.backlog },
                   on: { fromChild: _vm.refreshKanban }
+                }),
+                _vm._v(" "),
+                _c("developmentform", {
+                  attrs: { development: _vm.development },
+                  on: { fromChild: _vm.refreshKanban }
+                }),
+                _vm._v(" "),
+                _c("productform", {
+                  attrs: { product: _vm.product },
+                  on: { fromChild: _vm.refreshKanban }
+                }),
+                _vm._v(" "),
+                _c("doneform", {
+                  attrs: { done: _vm.done },
+                  on: { fromChild: _vm.refreshKanban }
                 })
               ],
               1
@@ -11849,9 +13271,9 @@ exports.default = _default;
                   _vm._v(" "),
                   _c("option", [_vm._v("Backlog")]),
                   _vm._v(" "),
-                  _c("option", [_vm._v("Product")]),
-                  _vm._v(" "),
                   _c("option", [_vm._v("Development")]),
+                  _vm._v(" "),
+                  _c("option", [_vm._v("Product")]),
                   _vm._v(" "),
                   _c("option", [_vm._v("Done")])
                 ]
@@ -11950,7 +13372,7 @@ render._withStripped = true
         
       }
     })();
-},{"axios":"node_modules/axios/index.js","./components/LoginRegister.vue":"src/components/LoginRegister.vue","./components/Backlog.vue":"src/components/Backlog.vue","_css_loader":"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"node_modules/bootstrap-vue/esm/utils/vue.js":[function(require,module,exports) {
+},{"axios":"node_modules/axios/index.js","./components/LoginRegister.vue":"src/components/LoginRegister.vue","./components/Backlog.vue":"src/components/Backlog.vue","./components/Development.vue":"src/components/Development.vue","./components/Product.vue":"src/components/Product.vue","./components/Done.vue":"src/components/Done.vue","_css_loader":"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"node_modules/bootstrap-vue/esm/utils/vue.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -56089,7 +57511,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61613" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62740" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
