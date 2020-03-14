@@ -4,24 +4,49 @@
         <login @statusToken="changeLayout" v-if="!token_seen" ></login>
 
     <!--     Kanban Layout   -->
-        <div v-if="token_seen" >
+        <div v-if="token_seen" class="kanban-layout">
                 <div class="tombol">
                     <button v-on:click="showModal" type="button" class="btn btn-primary" id="btn_add">Add Task</button>
-                    <h1>Kanban</h1>
+                    <h1 style="color: white">Kanban</h1>
                     <button v-on:click="logout" type="button" class="btn btn-warning" id="btn_logout">Logout</button>
                 </div>
                
-                <backlogform :backlog="backlog"></backlogform>
+               <div class="kanban">
+                <backlogform :backlog="backlog" @fromChild="refreshKanban"></backlogform>
                  
+
+               </div>
         </div>
 
     <!--     Modal   -->
-                <b-modal ref="my-modal" hide-footer title="Using Component Methods">
-                    <div class="d-block text-center">
-                        <h3>Hello From My Modal!</h3>
-                    </div>
-                    <b-button class="mt-3" variant="outline-danger" block @click="hideModal">Close Me</b-button>
-                </b-modal>
+        <b-modal ref="my-modal" hide-footer hide-header no-close-on-backdrop>
+        <div class="error">{{error}}</div>
+        <h2>Add Task</h2>
+        <form>
+            <div class="el-form">
+                Title :
+                <input v-model="form.title" type="text" class="form-control" placeholder="input title">
+            </div>
+            <div class="el-form">
+                Category :
+                <select v-model="form.category" class="custom-select">
+                    <option selected>Select category</option>
+                    <option>Backlog</option>
+                    <option>Product</option>
+                    <option>Development</option>
+                    <option>Done</option>
+                </select>
+            </div>
+            <div class="el-form">
+                Note:
+                <textarea v-model="form.note" type="text" class="form-control" rows="3" placeholder="input notes if required"></textarea>
+            <div>
+            <div>
+                <b-button class="mt-3" variant="outline-primary" block @click="submitModal">Submit Task</b-button>
+                <b-button class="mt-2" variant="outline-warning" block @click="hideModal">Cancel</b-button>
+            </div>
+         </form>
+        </b-modal>
 
 
 </div>
@@ -44,13 +69,19 @@ export default {
         },
     data(){
         return {
+            error: '',
             modal_seen: false,
             token_seen: false,
             token: null,
             backlog: [],
             product: [],
             development: [],
-            done: []
+            done: [],
+            form: {
+                title:'',
+                category: null,
+                note:''
+            }
         }
     },
 
@@ -64,22 +95,51 @@ export default {
         }
     },
     methods: {
-        changeLayout: function(){
-            this.token_seen = true
+        refreshKanban(){
+            this.initial()
+            this.getData()
         },
-        
         showModal() {
             this.$refs['my-modal'].show()
         },
         hideModal() {
+            this.error=''
             this.$refs['my-modal'].hide()
         },
-        
-        logout: function(){
+        initial() {
+            this.backlog= [],
+            this.product= [],
+            this.development= [],
+            this.done= []
+        },
+        submitModal(event){
+            event.preventDefault();
+            console.log(this.form)
+            let token= localStorage.getItem('token')
+            axios({
+                method: "post",
+                url: `${local}/kanbans`,
+                headers: {
+                    token: token
+                },
+                data: this.form
+            })
+            .then(data=>{
+                console.log("success")
+                this.initial()
+                this.getData()
+                this.hideModal()
+            })
+            .catch(err=>{
+                console.log("fail")
+                this.error = err.response.data
+            })
+        },
+        logout(){
             localStorage.clear()
             this.token_seen = false
         },
-        getData: function(){
+        getData(){
            let token= localStorage.getItem('token')
            console.log(token)
             axios({
@@ -103,17 +163,12 @@ export default {
                         this.done.push(result[i])
                     }
                 }
-                console.log(this.backlog)
             })
             .catch(function(){
                 console.log("fail")
-                this.error = err.response
+                this.error = err.response.data
             })
-        },
-        cancelTask: function(){
-            
-        }
-        
+        }   
     }
 
 }

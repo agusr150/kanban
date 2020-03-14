@@ -90,6 +90,9 @@ export default {
                 .then(function(res){
                     console.log("success")
                     this.error=''
+                    this.email_register='',
+                    this.password_register='',
+                    this.password_register2='',
                     this.register_seen = false
                 })
                 .catch(function(err){
@@ -108,7 +111,6 @@ export default {
                 console.log(res.data)
                 localStorage.setItem('token', res.data.token)
                 this.$emit('statusToken', true)
-                console.log('sampai')
             })
             .catch (function(err){
                 console.log('ok')

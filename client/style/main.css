@@ -18,8 +18,8 @@ body {
   }
 
   .kanban-layout {
-    height: 1000px;
-    width : 100%
+    margin: 20px;
+    padding: 20px
   }
 
   .tombol {
@@ -29,14 +29,14 @@ body {
     justify-content: space-between;
   }
 
-  .kanban {
-      /* background-color: #2261a1; */
+  /* .kanban { 
+      background-color: #2261a1;
       display: inline-flex;
       justify-content: space-around;
       border-radius: 5px;
       padding-top: 2rem;
       width : 100%
-  }
+  } */
 
   .box-container {
     background-color: #bdbebf;
@@ -94,4 +94,9 @@ body {
 
   footer {
       text-align: center;
+  }
+
+  .el-form {
+      font-weight: bold;
+      margin-top: 10px;
   }
