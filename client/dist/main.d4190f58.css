@@ -7,7 +7,7 @@ body {
 
   .register-form{
       color: white;
-      width: 80%;
+      width: 60%;
       margin-left: 20px;
       padding: 20px
   }
@@ -18,7 +18,7 @@ body {
 
   .login-form{
     color: white;
-    width: 80%;
+    width: 60%;
     margin-left: 20px;
     padding: 20px
   }

@@ -13142,6 +13142,7 @@ var _default = {
     logout: function logout() {
       this.signOut();
       localStorage.clear();
+      this.initial();
       this.token_seen = false;
     },
     signOut: function signOut() {

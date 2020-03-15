@@ -149,6 +149,7 @@ export default {
         logout(){
             this.signOut()
             localStorage.clear()
+            this.initial()
             this.token_seen = false
         },
         signOut() {
