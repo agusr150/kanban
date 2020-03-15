@@ -1,8 +1,9 @@
 <template>
     <div>
         <!--     Login FORM   -->
-        <div v-if="login_seen" id="login" >
+        <div v-if="login_seen" id="login" class="login-form">
             <form id="login-form">
+            <div class="error">{{error}}</div>
                 <h1>Login Form</h1>
                 <div class="form-group">
                     <label for="email-login">Email address</label>
@@ -22,8 +23,9 @@
         </div> 
 
         <!--     Register FORM   -->
-        <div v-if="register_seen" id="register">
+        <div v-if="register_seen" id="register" class="register-form">
             <form id="register-form">
+            <div class="error">{{error}}</div>
                 <h1>Register Form</h1>
                 <div class="form-group">
                     <label for="email-reg">Email address</label>
@@ -55,6 +57,7 @@ let local='http://localhost:3000'
 export default {
     data: function(){
         return {
+            error:'',
             email_login: '',
             password_login: '',
             email_register: '',
@@ -66,19 +69,19 @@ export default {
     },
   
     methods: {
-        backRegister: function(event){
+        backRegister(event){
             event.preventDefault();
             this.error=''
             this.login_seen = false
             this.register_seen = true
         },
-        backLogin: function(event){
+        backLogin(event){
             event.preventDefault();
             this.error=''
             this.register_seen = false
             this.login_seen = true
         },
-        submitRegister: function(event){
+        submitRegister(event){
             event.preventDefault()
             if (this.password_register !== this.password_register2){
                 this.error="password must be same"
@@ -87,21 +90,22 @@ export default {
                     email: this.email_register,
                     password: this.password_register
                 })
-                .then(function(res){
+                .then((res)=>{
                     console.log("success")
                     this.error=''
                     this.email_register='',
                     this.password_register='',
                     this.password_register2='',
                     this.register_seen = false
+                    this.login_seen = true
                 })
-                .catch(function(err){
+                .catch((err)=>{
                     console.log(err.response)
-                    this.error = err.response
+                    this.error = err.response.data
                 })
             }   
         },
-        submitLogin: function(event){
+        submitLogin(event){
             event.preventDefault()
             axios.post(`${local}/user/login`, {
                 email: this.email_login,
@@ -112,10 +116,9 @@ export default {
                 localStorage.setItem('token', res.data.token)
                 this.$emit('statusToken', true)
             })
-            .catch (function(err){
-                console.log('ok')
-                console.log(err)
-                this.error = err.response
+            .catch ((err)=>{
+                console.log(err.response)
+                this.error = err.response.data
             })
         },
     }

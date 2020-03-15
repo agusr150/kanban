@@ -10643,10 +10643,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
 var local = 'http://localhost:3000';
 var _default = {
   data: function data() {
     return {
+      error: '',
       email_login: '',
       password_login: '',
       email_register: '',
@@ -10670,6 +10673,8 @@ var _default = {
       this.login_seen = true;
     },
     submitRegister: function submitRegister(event) {
+      var _this = this;
+
       event.preventDefault();
 
       if (this.password_register !== this.password_register2) {
@@ -10680,16 +10685,17 @@ var _default = {
           password: this.password_register
         }).then(function (res) {
           console.log("success");
-          this.error = '';
-          this.email_register = '', this.password_register = '', this.password_register2 = '', this.register_seen = false;
+          _this.error = '';
+          _this.email_register = '', _this.password_register = '', _this.password_register2 = '', _this.register_seen = false;
+          _this.login_seen = true;
         }).catch(function (err) {
           console.log(err.response);
-          this.error = err.response;
+          _this.error = err.response.data;
         });
       }
     },
     submitLogin: function submitLogin(event) {
-      var _this = this;
+      var _this2 = this;
 
       event.preventDefault();
 
@@ -10700,11 +10706,10 @@ var _default = {
         console.log(res.data);
         localStorage.setItem('token', res.data.token);
 
-        _this.$emit('statusToken', true);
+        _this2.$emit('statusToken', true);
       }).catch(function (err) {
-        console.log('ok');
-        console.log(err);
-        this.error = err.response;
+        console.log(err.response);
+        _this2.error = err.response.data;
       });
     }
   }
@@ -10724,8 +10729,10 @@ exports.default = _default;
   var _c = _vm._self._c || _h
   return _c("div", [
     _vm.login_seen
-      ? _c("div", { attrs: { id: "login" } }, [
+      ? _c("div", { staticClass: "login-form", attrs: { id: "login" } }, [
           _c("form", { attrs: { id: "login-form" } }, [
+            _c("div", { staticClass: "error" }, [_vm._v(_vm._s(_vm.error))]),
+            _vm._v(" "),
             _c("h1", [_vm._v("Login Form")]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
@@ -10826,8 +10833,10 @@ exports.default = _default;
       : _vm._e(),
     _vm._v(" "),
     _vm.register_seen
-      ? _c("div", { attrs: { id: "register" } }, [
+      ? _c("div", { staticClass: "register-form", attrs: { id: "register" } }, [
           _c("form", { attrs: { id: "register-form" } }, [
+            _c("div", { staticClass: "error" }, [_vm._v(_vm._s(_vm.error))]),
+            _vm._v(" "),
             _c("h1", [_vm._v("Register Form")]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
@@ -13036,6 +13045,10 @@ var _default = {
     }
   },
   methods: {
+    changeLayout: function changeLayout() {
+      this.token_seen = true;
+      this.getData();
+    },
     refreshKanban: function refreshKanban() {
       this.initial();
       this.getData();
@@ -57511,7 +57524,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62740" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52840" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

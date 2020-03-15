@@ -101,6 +101,10 @@ export default {
         }
     },
     methods: {
+        changeLayout(){
+            this.token_seen = true
+            this.getData()
+        },
         refreshKanban(){
             this.initial()
             this.getData()

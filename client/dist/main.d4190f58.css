@@ -5,16 +5,22 @@ body {
     color: white
   }
 
+  .register-form{
+      color: white;
+      width: 60%;
+      margin-left: 20px;
+      padding: 20px
+  }
+
   .error{
     color: red
   }
 
-  .register{
-    width: 60%
-  }
-
-  .login{
+  .login-form{
+    color: white;
     width: 60%;
+    margin-left: 20px;
+    padding: 20px
   }
 
   .kanban-layout {
