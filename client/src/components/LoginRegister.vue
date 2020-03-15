@@ -17,7 +17,7 @@
                     <button v-on:click="submitLogin" type="submit" class="btn btn-primary mb-3">Login</button><br>
                     Please register if you have never been registered yet or using Google Sign In!
                     <button v-on:click="backRegister" type="button" class="btn btn-primary" id="btn-register">Register</button>
-                    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                    <GoogleLogin :params="params" :renderParams="renderParams" :onSuccess="onSuccess" class="g-signin2"></GoogleLogin>
                 </div>
             </form>
         </div> 
@@ -53,6 +53,7 @@
 
 <script>
 import axios from 'axios'
+import GoogleLogin from 'vue-google-login'
 let local='http://localhost:3000'
 export default {
     data: function(){
@@ -64,10 +65,20 @@ export default {
             password_register: '',
             password_register2: '',
             login_seen: true,
-            register_seen: false
+            register_seen: false,
+            params: {
+                    client_id: "29760818398-00bf5bm48dua8i04uii7sgjf1fmd2n1i.apps.googleusercontent.com"
+            },
+            renderParams: {
+                    width: 150,
+                    height: 50,
+                    longtitle: false
+            }
         }
     },
-  
+    components: {
+            GoogleLogin
+    },
     methods: {
         backRegister(event){
             event.preventDefault();
@@ -121,6 +132,28 @@ export default {
                 this.error = err.response.data
             })
         },
+        onSuccess(googleUser) {
+            console.log('on success')
+            var id_token = googleUser.getAuthResponse().id_token;
+            axios({
+                method: 'post',
+                url: `${local}/user/googlelogin`,
+                data: {
+                    id_token
+                }
+            })
+            .then((res)=>{
+                console.log("google signin")
+                localStorage.setItem('token', res.data.token)
+                this.$emit('statusToken', true)
+            })
+            .catch((err)=>{
+                console.log(err.response)
+                console.log('fail google')
+                this.error = err.response.data
+            })
+        }
+        
     }
 
 

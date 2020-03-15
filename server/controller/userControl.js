@@ -2,7 +2,7 @@ const { User } = require('../models/index')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const {OAuth2Client} = require('google-auth-library');
-const client = new OAuth2Client(process.env.CLIENT_ID);
+const client = new OAuth2Client('430077671481-v5fne4ieak3vg5m5f2cfu4damo0f3sjh.apps.googleusercontent.com');
 
 class UserControl {
 
@@ -46,7 +46,7 @@ class UserControl {
     static googleLogin(req, res, next){
         client.verifyIdToken({
             idToken: req.body.id_token,
-            audience: process.env.CLIENT, // Specify the CLIENT_ID of the app that accesses the backend
+            audience: '29760818398-00bf5bm48dua8i04uii7sgjf1fmd2n1i.apps.googleusercontent.com', // Specify the CLIENT_ID of the app that accesses the backend
                 // Or, if multiple clients access the backend:
                 //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
             })
@@ -71,7 +71,7 @@ class UserControl {
                     })
                     .then(data => {
                         if (data) {
-                            var token = jwt.sign({id: data.id, email: data.email}, process.env.JWT_SECRET)
+                            var token = jwt.sign({id: data.id, email: data.email}, 'aaa')
                         }
                         res.status(200).json({ token: token })
                     })

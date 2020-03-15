@@ -59,6 +59,7 @@
 <script>
 let local='http://localhost:3000'
 import axios from 'axios'
+import GoogleLogin from 'vue-google-login'
 import login from './components/LoginRegister.vue'
 import backlogform from './components/Backlog.vue'
 import developmentform from './components/Development.vue'
@@ -146,8 +147,15 @@ export default {
             })
         },
         logout(){
+            this.signOut()
             localStorage.clear()
             this.token_seen = false
+        },
+        signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+            console.log('User signed out.');
+            });
         },
         getData(){
            let token= localStorage.getItem('token')

@@ -10305,7 +10305,12 @@ module.exports.default = axios;
 
 },{"./utils":"node_modules/axios/lib/utils.js","./helpers/bind":"node_modules/axios/lib/helpers/bind.js","./core/Axios":"node_modules/axios/lib/core/Axios.js","./core/mergeConfig":"node_modules/axios/lib/core/mergeConfig.js","./defaults":"node_modules/axios/lib/defaults.js","./cancel/Cancel":"node_modules/axios/lib/cancel/Cancel.js","./cancel/CancelToken":"node_modules/axios/lib/cancel/CancelToken.js","./cancel/isCancel":"node_modules/axios/lib/cancel/isCancel.js","./helpers/spread":"node_modules/axios/lib/helpers/spread.js"}],"node_modules/axios/index.js":[function(require,module,exports) {
 module.exports = require('./lib/axios');
-},{"./lib/axios":"node_modules/axios/lib/axios.js"}],"node_modules/vue-hot-reload-api/dist/index.js":[function(require,module,exports) {
+},{"./lib/axios":"node_modules/axios/lib/axios.js"}],"node_modules/vue-google-login/dist/vue-google-login.min.js":[function(require,module,exports) {
+var define;
+!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"function"==typeof define&&define.amd?define(["exports"],e):e((t=t||self)["vue-google-login"]={})}(this,function(t){"use strict";var e,n,o=function(t){return e?Promise.resolve(e):(n||(n=function(t){return new Promise(function(n,o){window.onGapiLoad=function(){window.gapi.load("auth2",function(){try{e=window.gapi.auth2.init(Object.assign({},t))}catch(t){o({err:"client_id missing or is incorrect, or if you added extra params maybe they are written incorrectly, did you add it to the component or plugin?"})}n(e)})}})}(t)),n)},i=function(t,e){if(t)return t[e]();return Promise.reject({err:"Script not loaded correctly, did you added the plugin or the client_id to the component?"})},r={load:function(t){return Promise.all([o(t),new Promise(function(t,e){if(!document.getElementById("auth2_script_id")){var n=document.createElement("script");n.setAttribute("src","https://apis.google.com/js/platform.js?onload=onGapiLoad"),n.setAttribute("async",!0),n.setAttribute("defer","defer"),n.setAttribute("id","auth2_script_id"),document.head.appendChild(n)}t()})]).then(function(t){return t[0]})},signIn:function(){return i(e,"signIn")},signOut:function(){return i(e,"signOut")}},s=0;var d=function(t,e,n,o,i,r,s,d,u,a){"boolean"!=typeof s&&(u=d,d=s,s=!1);var c,l="function"==typeof n?n.options:n;if(t&&t.render&&(l.render=t.render,l.staticRenderFns=t.staticRenderFns,l._compiled=!0,i&&(l.functional=!0)),o&&(l._scopeId=o),r?(c=function(t){(t=t||this.$vnode&&this.$vnode.ssrContext||this.parent&&this.parent.$vnode&&this.parent.$vnode.ssrContext)||"undefined"==typeof __VUE_SSR_CONTEXT__||(t=__VUE_SSR_CONTEXT__),e&&e.call(this,u(t)),t&&t._registeredComponents&&t._registeredComponents.add(r)},l._ssrRegister=c):e&&(c=s?function(){e.call(this,a(this.$root.$options.shadowRoot))}:function(t){e.call(this,d(t))}),c)if(l.functional){var f=l.render;l.render=function(t,e){return c.call(e),f(t,e)}}else{var h=l.beforeCreate;l.beforeCreate=h?[].concat(h,c):[c]}return n}({render:function(){var t=this.$createElement,e=this._self._c||t;return this.renderParams&&!this.logoutButton?e("div",{attrs:{id:this.id},on:{click:this.handleClick}}):e("button",{attrs:{id:this.id},on:{click:this.handleClick}},[this._t("default")],2)},staticRenderFns:[]},void 0,{name:"GoogleLogin",props:{params:{type:Object,required:!0},onSuccess:{type:Function,default:function(){}},onFailure:{type:Function,default:function(){}},logoutButton:{type:Boolean,default:!1},renderParams:{type:Object,required:!1}},beforeCreate:function(){this.id="google-signin-btn-".concat(s++)},methods:{handleClick:function(){var t=this,e=this.logoutButton?"signOut":"signIn";r[e]().then(function(e){return t.onSuccess(e)}).catch(function(e){return t.onFailure(e)})}},mounted:function(){var t=this;r.load(this.params).then(function(){t.renderParams&&!1===t.logoutButton&&window.gapi.signin2.render(t.id,t.renderParams)}).catch(function(t){console.log(t)})}},void 0,!1,void 0,void 0,void 0),u={install:function(t,e){t.GoogleAuth=r.load(e)}};t.GoogleLogin=d,t.LoaderPlugin=u,t.default=d,Object.defineProperty(t,"__esModule",{value:!0})});
+
+
+},{}],"node_modules/vue-hot-reload-api/dist/index.js":[function(require,module,exports) {
 var Vue // late bind
 var version
 var map = Object.create(null)
@@ -10590,6 +10595,8 @@ exports.default = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
+var _vueGoogleLogin = _interopRequireDefault(require("vue-google-login"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //
@@ -10656,8 +10663,19 @@ var _default = {
       password_register: '',
       password_register2: '',
       login_seen: true,
-      register_seen: false
+      register_seen: false,
+      params: {
+        client_id: "29760818398-00bf5bm48dua8i04uii7sgjf1fmd2n1i.apps.googleusercontent.com"
+      },
+      renderParams: {
+        width: 150,
+        height: 50,
+        longtitle: false
+      }
     };
+  },
+  components: {
+    GoogleLogin: _vueGoogleLogin.default
   },
   methods: {
     backRegister: function backRegister(event) {
@@ -10710,6 +10728,28 @@ var _default = {
       }).catch(function (err) {
         console.log(err.response);
         _this2.error = err.response.data;
+      });
+    },
+    onSuccess: function onSuccess(googleUser) {
+      var _this3 = this;
+
+      console.log('on success');
+      var id_token = googleUser.getAuthResponse().id_token;
+      (0, _axios.default)({
+        method: 'post',
+        url: "".concat(local, "/user/googlelogin"),
+        data: {
+          id_token: id_token
+        }
+      }).then(function (res) {
+        console.log("google signin");
+        localStorage.setItem('token', res.data.token);
+
+        _this3.$emit('statusToken', true);
+      }).catch(function (err) {
+        console.log(err.response);
+        console.log('fail google');
+        _this3.error = err.response.data;
       });
     }
   }
@@ -10799,35 +10839,43 @@ exports.default = _default;
               })
             ]),
             _vm._v(" "),
-            _c("div", [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary mb-3",
-                  attrs: { type: "submit" },
-                  on: { click: _vm.submitLogin }
-                },
-                [_vm._v("Login")]
-              ),
-              _c("br"),
-              _vm._v(
-                "\n                Please register if you have never been registered yet or using Google Sign In!\n                "
-              ),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  attrs: { type: "button", id: "btn-register" },
-                  on: { click: _vm.backRegister }
-                },
-                [_vm._v("Register")]
-              ),
-              _vm._v(" "),
-              _c("div", {
-                staticClass: "g-signin2",
-                attrs: { "data-onsuccess": "onSignIn" }
-              })
-            ])
+            _c(
+              "div",
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary mb-3",
+                    attrs: { type: "submit" },
+                    on: { click: _vm.submitLogin }
+                  },
+                  [_vm._v("Login")]
+                ),
+                _c("br"),
+                _vm._v(
+                  "\n                Please register if you have never been registered yet or using Google Sign In!\n                "
+                ),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button", id: "btn-register" },
+                    on: { click: _vm.backRegister }
+                  },
+                  [_vm._v("Register")]
+                ),
+                _vm._v(" "),
+                _c("GoogleLogin", {
+                  staticClass: "g-signin2",
+                  attrs: {
+                    params: _vm.params,
+                    renderParams: _vm.renderParams,
+                    onSuccess: _vm.onSuccess
+                  }
+                })
+              ],
+              1
+            )
           ])
         ])
       : _vm._e(),
@@ -10996,7 +11044,7 @@ render._withStripped = true
         
       }
     })();
-},{"axios":"node_modules/axios/index.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+},{"axios":"node_modules/axios/index.js","vue-google-login":"node_modules/vue-google-login/dist/vue-google-login.min.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
 function getBundleURLCached() {
@@ -12937,6 +12985,8 @@ exports.default = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
+var _vueGoogleLogin = _interopRequireDefault(require("vue-google-login"));
+
 var _LoginRegister = _interopRequireDefault(require("./components/LoginRegister.vue"));
 
 var _Backlog = _interopRequireDefault(require("./components/Backlog.vue"));
@@ -13090,8 +13140,15 @@ var _default = {
       });
     },
     logout: function logout() {
+      this.signOut();
       localStorage.clear();
       this.token_seen = false;
+    },
+    signOut: function signOut() {
+      var auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut().then(function () {
+        console.log('User signed out.');
+      });
     },
     getData: function getData() {
       var _this2 = this;
@@ -13385,7 +13442,7 @@ render._withStripped = true
         
       }
     })();
-},{"axios":"node_modules/axios/index.js","./components/LoginRegister.vue":"src/components/LoginRegister.vue","./components/Backlog.vue":"src/components/Backlog.vue","./components/Development.vue":"src/components/Development.vue","./components/Product.vue":"src/components/Product.vue","./components/Done.vue":"src/components/Done.vue","_css_loader":"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"node_modules/bootstrap-vue/esm/utils/vue.js":[function(require,module,exports) {
+},{"axios":"node_modules/axios/index.js","vue-google-login":"node_modules/vue-google-login/dist/vue-google-login.min.js","./components/LoginRegister.vue":"src/components/LoginRegister.vue","./components/Backlog.vue":"src/components/Backlog.vue","./components/Development.vue":"src/components/Development.vue","./components/Product.vue":"src/components/Product.vue","./components/Done.vue":"src/components/Done.vue","_css_loader":"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"node_modules/bootstrap-vue/esm/utils/vue.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -57524,7 +57581,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52840" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59475" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
