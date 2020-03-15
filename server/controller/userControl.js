@@ -2,7 +2,7 @@ const { User } = require('../models/index')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const {OAuth2Client} = require('google-auth-library');
-const client = new OAuth2Client('430077671481-v5fne4ieak3vg5m5f2cfu4damo0f3sjh.apps.googleusercontent.com');
+const client = new OAuth2Client(process.env.CLIENT_ID);
 
 class UserControl {
 
@@ -31,7 +31,7 @@ class UserControl {
         .then(user=>{
             if(user){
                 if (bcrypt.compareSync(password, user.password)){
-                    let token = jwt.sign({id: user.id, email: user.email}, 'aaa')
+                    let token = jwt.sign({id: user.id, email: user.email}, process.env.JWT_SECRET)
                     res.status(200).json({token})
                 } else {
                     res.status(400).json('password wrong')
@@ -46,7 +46,7 @@ class UserControl {
     static googleLogin(req, res, next){
         client.verifyIdToken({
             idToken: req.body.id_token,
-            audience: '29760818398-00bf5bm48dua8i04uii7sgjf1fmd2n1i.apps.googleusercontent.com', // Specify the CLIENT_ID of the app that accesses the backend
+            audience: process.env.CLIENT_ID, // Specify the CLIENT_ID of the app that accesses the backend
                 // Or, if multiple clients access the backend:
                 //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
             })
@@ -64,14 +64,14 @@ class UserControl {
                         else {
                             let obj = {
                                 email: payload.email,
-                                password: "google"
+                                password: process.env.PASS_PAYLOAD
                             }
                             return User.create(obj)
                         }
                     })
                     .then(data => {
                         if (data) {
-                            var token = jwt.sign({id: data.id, email: data.email}, 'aaa')
+                            var token = jwt.sign({id: data.id, email: data.email}, process.env.JWT_SECRET)
                         }
                         res.status(200).json({ token: token })
                     })
