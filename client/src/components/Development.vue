@@ -1,89 +1,138 @@
 <template>
-            <div class="box-container" style="background-color: red" v-bind:task="development">
+        <div>
+            <div class="box-container" style="background-color: yellow" >
                 <header class="category">Development</header>
-                <div id="development" class="box-task">
-                    <div v-for="list in development">
+                <div id="backlog" class="box-task">  
+                    <div v-for="list in development" :key="list.id" class="card" style="background: #f0e9a3">
                         <div class="content">{{list.title}}</div>
+                        <div class="subcontent">note: {{list.note}}</div>
                         <div class="button">
-                            <button class="btn">Edit <i class="fa fa-pencil"></i></button>
-                            <button class="btn">Remove <i class="fa fa-trash"></i></button>
+                            <button v-on:click="editTask(list.id, list.title, list.category, list.note)"  class="btn btn-warning" >Edit <i class="fa fa-pencil"></i></button>
+                            <button v-on:click="deleteTask(list.id)" class="btn btn-warning">Remove <i class="fa fa-trash"></i></button>
                         </div>
                     </div>
                 </div>
             </div>
-            <!--    Edit Form   -->
-            <div v-if="add_development" id="modal">
-                <form>
-                    <h2>Edit Task</h2>
-                    <label >Title :</label>
-                    <input v-model="title" type="text" class="form-control" >
-                    <label >Category :</label>
-                    <select v-model="category" class="custom-select">
-                        <option selected>Select category</option>
-                        <option>Backlog</option>
-                        <option>Product</option>
-                        <option>Development</option>
-                        <option>Done</option>
-                    </select>
-                    <label >Note:</label>
-                    <input v-model="note" type="text" class="form-control">
-                    <button v-on:click="submitEdit" type="submit" class="btn btn-primary">Submit</button>
-                    <button v-on:click="cancelEdit" type="button" class="btn btn-primary">Cancel</button>
-                </form>
+
+<!--     Modal  Edit -->
+        <b-modal ref="my-modal" hide-footer hide-header no-close-on-backdrop>
+        <div class="error">{{error}}</div>
+        <h2>Edit Task</h2>
+        <form>
+            <div class="el-form">
+                Title :
+                <input v-model="form.title" type="text" class="form-control">
             </div>
+            <div class="el-form">
+                Category :
+                <select v-model="form.category" class="custom-select">
+                    <option selected>Select category</option>
+                    <option>Backlog</option>
+                    <option>Development</option>
+                    <option>Product</option>
+                    <option>Done</option>
+                </select>
+            </div>
+            <div class="el-form">
+                Note:
+                <textarea v-model="form.note" type="text" class="form-control" rows="3" placeholder="input notes if required"></textarea>
+            <div>
+            <div>
+                <b-button class="mt-3" variant="outline-primary" block @click="submitEdit">Submit Update</b-button>
+                <b-button class="mt-2" variant="outline-warning" block @click="hideModal">Cancel</b-button>
+            </div>
+         </form>
+        </b-modal>
+
+    <!--     Modal  Delete -->
+        <b-modal ref="del-modal" hide-footer hide-header no-close-on-backdrop>
+         <div class="error">{{error}}</div>
+        <div>Are you sure to delete this task? </div>
+         <div>
+                <b-button class="mt-3" variant="outline-danger" block @click="submitDelete">Confirm Delete</b-button>
+                <b-button class="mt-2" variant="outline-warning" block @click="hideModal">Cancel</b-button>
+        </div>
+
+    
+        </div>
 
 </template>
 
 <script>
 import axios from 'axios'
-
 let local='http://localhost:3000'
-export default { 
-    props: ['datadevelopment'],
-    data: function(){
-        return {
-            development : this.datadevelopment,
-            add_development : false
+export default {
+    props: ["development"],
+    data(){
+        return{
+            error: '',
+            form: {
+                id: '',
+                title: '',
+                category: null,
+                note: ''
+            }
         }
     },
-
-    method: {
-        deleteTask: function(id){
+    methods: {
+        deleteTask(id){
+            this.$refs['del-modal'].show()
+            this.form.id=id
+        },
+        submitDelete(event){
+            event.preventDefault();
+            console.log(this.form.id)
+            let token= localStorage.getItem('token')
             axios({
                 method: "delete",
-                url: `${local}/kanbans/${id}`,
-                headers: {
-                    token: token
-                }
-            })
-            .then(function(res){
-                console.log("delete success")
-            })
-            .catch(function(err){
-                console.log("fail")
-                this.error = err.response.data
-            })
-        },
-
-        editTask: function(){
-              this.add_backlog = true
-        },
-
-        submitEdit: function(id){
-            let token = localStorage.getItem('token')
-            axios({
-                method: "post",
-                url: `${local}/kanbans/${id}`,
+                url: `${local}/kanbans/`+this.form.id,
                 headers: {
                     token: token
                 },
-                data: {
-                    title: this.title,
-                    category: this.category,
-                    note: this.note
-                }
+            })
+            .then(data=>{
+                console.log('succes delete')
+                this.hideModal()
+                this.$emit('fromChild')
+            })
+            .catch(err=>{
+                console.log('fail')
+                this.error = err.response.data
+            })
+        },
+        editTask(id, title, category, note){
+            this.$refs['my-modal'].show()
+            this.form.id = id
+            this.form.title = title
+            this.form.category = category
+            this.form.note = note
+        },
+        hideModal() {
+            this.error=''
+            this.$refs['my-modal'].hide()
+            this.$refs['del-modal'].hide()
+        },
+        submitEdit(event){
+            event.preventDefault()
+            let token= localStorage.getItem('token')
+            axios({
+                method: "put",
+                url: `${local}/kanbans/`+this.form.id,
+                headers: {
+                    token: token
+                },
+                data: this.form
+            })
+            .then(data=>{
+                this.hideModal()
+                this.$emit('fromChild')
+            })
+             .catch(err=>{
+                console.log('fail')
+                this.error = err.response.data
             })
         }
     }
+}
 
 </script>

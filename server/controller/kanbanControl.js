@@ -28,7 +28,7 @@ class KanbanControl {
         let newData = {
             title: req.body.title,
             category: req.body.category,
-            note: req.body.status,
+            note: req.body.note,
             UserId: req.userdata.id
         }
         Kanban.create(newData)

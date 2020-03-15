@@ -5,31 +5,37 @@ body {
     color: white
   }
 
+  .register-form{
+      color: white;
+      width: 60%;
+      margin-left: 20px;
+      padding: 20px
+  }
+
   .error{
     color: red
   }
 
-  .register{
-    width: 60%
-  }
-
-  .login{
+  .login-form{
+    color: white;
     width: 60%;
+    margin-left: 20px;
+    padding: 20px
   }
 
   .kanban-layout {
-    /* background-color:#2261a1; */
-    height: 1000px;
-    width : 100%
+    margin: 20px;
+    padding: 20px
   }
 
-  .logout {
-    text-align: center;
+  .tombol {
     padding-top: 20px;
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: space-around;
   }
 
-  .kanban {
-      /* background-color: #2261a1; */
+  .kanban { 
       display: inline-flex;
       justify-content: space-around;
       border-radius: 5px;
@@ -43,7 +49,6 @@ body {
     display: flex;
     flex-direction: column;
     border-radius: 10px;
-    height: 100%;
     width: 250px;
     overflow: auto;
     font-size: 24px;
@@ -56,34 +61,50 @@ body {
   }
 
   .box-task {
-      font-size: 12px;
       padding: 8px;
       display: flex;
       flex-direction: column;
+      min-height: 100px;
   }
 
   .card{
     background-color: white;
-    color: grey;
-    border-radius: 4px;
-    margin-top: 5px;
+    color:#2e2d28;
+    border-radius: 8px;
+    margin-top: 10px;
     padding-top: 5px;
     display: flex;
-    flex-direction: row
+    flex-direction: column
   }
 
   .content{
-    width: 250px
+    text-align: center;
+    font-size: 16px;
+    margin: 4px;
+    color: black;
+    font-weight: 600;
+  }
+
+  .subcontent{
+    text-align: left;
+    font-size: 14px;
+    margin: 4px
   }
 
   .button{
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    justify-content:space-around
   }
 
   footer {
       text-align: center;
   }
+
+  .el-form {
+      font-weight: bold;
+      margin-top: 10px;
+  }
+
 
 /*# sourceMappingURL=/main.d4190f58.css.map */
